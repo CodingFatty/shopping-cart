@@ -34,7 +34,16 @@ app.post('/product/add', (req, res) => {
 });
 
 app.post('/product/buy', (req, res) => {
-
+  Product.findOne({ title: req.body.title }, (err, product) => {
+    if (product.inventory_count > 0 ) {
+      product.inventory_count--;
+      product.save().then((product2) => {
+        res.send({ 'message': `You have purchased an ${product2.title}. Stock left: ${product.inventory_count}`});
+      })
+    } else {
+      res.send({ 'message': `${product.title} is out of stock` });
+    }
+  })
 })
 
 app.listen(3000, () => {
