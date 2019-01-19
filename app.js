@@ -1,17 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose'); 
 const Product = require('./models/product');
+const _ = require('lodash');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/shopping_cart');
+mongoose.connect('mongodb://localhost:27017/shopping_cart', { useNewUrlParser: true });
 
 app.use(express.json());
 
 app.post('/product/fetch', (req, res) => {
-  let product_name = req.body.title? { title: req.body.title } : null;
+  if (_.isEmpty(req.body) && !req.body.title && !req.body.inStockOnly) {
+    return res.send('error');
+  }
 
-  Product.find(product_name, '-__v').then((result) => {
+  let query_condition = req.body.title? { title: req.body.title } : req.body.inStockOnly? { inventory_count: { $gt: 0 } } : null ;
+
+  Product.find(query_condition, '-__v').then((result) => {
     res.send(result);
   })
 });
@@ -28,4 +33,10 @@ app.post('/product/add', (req, res) => {
   res.send('ok');
 });
 
-app.listen(3000);
+app.post('/product/buy', (req, res) => {
+
+})
+
+app.listen(3000, () => {
+  console.log(`Server is running`)
+});
