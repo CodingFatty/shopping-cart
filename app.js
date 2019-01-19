@@ -21,16 +21,40 @@ app.post('/product/fetch', (req, res) => {
   })
 });
 
-app.post('/product/add', (req, res) => {
-  let product_list = req.body;
+app.post('/product/add', async (req, res) => {
+  let products = req.body;
 
-  for (let item of product_list) {
-    let product = new Product(item);
-    product.save(() => {
-      console.log(`${item.title} saved`);
-    })
+  async function valid_schema() {
+    let error_list = [];
+    for (let item of products) {
+      let product = new Product(item);
+      let error = product.validateSync();
+      if (error) {
+        error_list.push({product, error})
+      }
+    }
+    return error_list;
   }
-  res.send('ok');
+
+  let result = await valid_schema();
+
+  if (!_.isEmpty(result)) {
+    return res.send(result);
+  }
+
+  async function inserting() {
+    let product_list = [];
+    for (let item of products) {
+      let product = new Product(item);
+      await product.save();
+      product_list.push(product.title);
+    }
+    return product_list;
+  }
+
+  inserting().then((prod) => {
+    res.send({ 'message': `You have added ${prod} to the inventory`});
+  }).catch(err => res.send(err));
 });
 
 app.post('/product/buy', (req, res) => {
