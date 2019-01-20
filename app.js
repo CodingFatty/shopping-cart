@@ -34,38 +34,36 @@ app.post('/product/fetch', (req, res) => {
 
 app.post('/product/insert', async (req, res) => {
   let products = req.body;
+  let product_list = [];
+  let error_list = [];
 
-  async function valid_schema() {
-    let error_list = [];
-    for (let item of products) {
-      let product = new Product(item);
-      let error = product.validateSync();
-      if (error) {
-        error_list.push({product, error})
+  for (let item of products) {
+    let product = new Product(item);
+    let error = product.validateSync();
+    if (error) {
+      error_list.push({product, error})
+    }
+  }
+
+  if (!_.isEmpty(error_list)) {
+    return res.send(error_list);
+  }
+
+  for (let item of products) {
+    await Product.findOne({ title: item.title }).then((product) => {
+      if (_.isEmpty(product)) {
+        new Product(item).save();
+      } else {
+        product.inventory_count += item.inventory_count;
+        product.price = item.price;
+        product.save();
       }
-    }
-    return error_list;
+      product_list.push(item.title);
+    });
   }
 
-  let result = await valid_schema();
+  res.send({ 'message': `You have added ${product_list} to the inventory` });
 
-  if (!_.isEmpty(result)) {
-    return res.send(result);
-  }
-
-  async function inserting() {
-    let product_list = [];
-    for (let item of products) {
-      let product = new Product(item);
-      await product.save();
-      product_list.push(product.title);
-    }
-    return product_list;
-  }
-
-  inserting().then((prod) => {
-    res.send({ 'message': `You have added ${prod} to the inventory`});
-  }).catch(err => res.send(err));
 });
 
 app.post('/product/addItemToCart', (req, res) => {
