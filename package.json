@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/CodingFatty/shopping-cart#readme",
   "dependencies": {
+    "connect-mongo": "^2.0.3",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.5"
   }
