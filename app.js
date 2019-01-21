@@ -21,9 +21,9 @@ app.use(session({
   cookies: { maxAge: 60*60*1000 }
 }))
 
-// app.get('/', (req, res) => {
-//   res.send(`The app is running on ${port}`)
-// })
+app.get('/', (req, res) => {
+  res.send(`The app is running on ${port}`)
+})
 
 app.post('/product/fetch', (req, res) => {
   if (_.isEmpty(req.body) && !req.body.title && !req.body.inStockOnly) {
