@@ -1,5 +1,5 @@
 # Shopping-Cart-Api
-[![Heroku](https://heroku-badge.herokuapp.com/?app=shopping-cart-challenge)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=shopping-cart-challenge)
 
 ## What you need
 - [Node.js](https://nodejs.org/)
