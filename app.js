@@ -9,7 +9,7 @@ const _ = require('lodash');
 const app = express();
 const port = process.env.PORT;
 
-mongoose.connect(process.env_MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.use(express.json());
 
