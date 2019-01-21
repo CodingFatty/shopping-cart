@@ -22,7 +22,7 @@ app.use(session({
 }))
 
 app.get('/', (req, res) => {
-  res.send(`The app is running on ${port}`)
+  res.send(`The app is running`)
 })
 
 app.post('/product/fetch', (req, res) => {
@@ -120,5 +120,5 @@ app.post('/product/checkout', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running`)
+  console.log(`Server is running on ${port}`)
 });
