@@ -10,6 +10,7 @@ Shopping-cart requires [Node.js](https://nodejs.org/) v9.5.0 to run.
 ```sh
 git clone https://github.com/CodingFatty/shopping-cart.git
 cd shopping-cart
+git checkout extra-credit-version
 npm install
 node app.js
 ```
