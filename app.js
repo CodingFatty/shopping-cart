@@ -7,8 +7,9 @@ const Cart = require('./models/cart');
 const _ = require('lodash');
 
 const app = express();
+const port = process.env.PORT;
 
-mongoose.connect('mongodb://localhost:27017/shopping_cart', { useNewUrlParser: true });
+mongoose.connect(process.env_MONGODB_URI, { useNewUrlParser: true });
 
 app.use(express.json());
 
@@ -114,6 +115,6 @@ app.post('/product/checkout', async (req, res) => {
   
 });
 
-app.listen(3000, () => {
-  console.log(`Server is running`)
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`)
 });
