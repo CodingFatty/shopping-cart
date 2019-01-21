@@ -13,6 +13,11 @@ cd shopping-cart
 npm install
 node app.js
 ```
+Then, navigating to your server address in your preferred beowser.
+ ```sh
+ localhost:3000
+```
+
 ## APIs
 | Method | Link | Description | Request Body | Remarks |
 | ------| -----| ------ | ----- | ---- |
